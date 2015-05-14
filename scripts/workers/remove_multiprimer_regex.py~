@@ -1,0 +1,49 @@
+#!/usr/bin/python
+
+import optparse
+import re
+import string
+from optparse import OptionParser
+from Bio import SeqIO
+from string import upper
+from Bio.Seq import Seq
+
+
+parser=OptionParser()
+parser.add_option("-i","--inputfile", 
+                  action="store", type="string", dest="inputfile", 
+                  default="NONE", help ="path to FASTQ-file")
+parser.add_option("-o","--outputfile",
+                  action="store", type="string", dest="outputfile", 
+                  default="NONE", help ="path to FASTQ-file")
+parser.add_option("-f","--forwardPrimer",
+                  action="store", type="string", dest="forwardPrimer", 
+                  default="NONE", help ="give forward primer sequence") 
+parser.add_option("-r","--reversePrimer",
+                  action="store", type="string", dest="reversePrimer", 
+                  default="NONE", help ="give reverse primer sequence") 
+(options, args) = parser.parse_args()
+
+forward_seq = re.compile(options.forwardPrimer)
+reverse_seq = re.compile(options.reversePrimer)
+
+def forward_rc(forward_seq):
+	complements = string.maketrans('acgtrymkbdhvACGTRYMKBDHV', 'tgcayrkmvhdbTGCAYRKMVHDB')
+	rcseq = forward_seq.translate(complements)[::-1]
+	return rcseq
+
+def reverse_rc(forward_seq):
+	complements = string.maketrans('acgtrymkbdhvACGTRYMKBDHV', 'tgcayrkmvhdbTGCAYRKMVHDB')
+	rcseq = reverse_seq.translate(complements)[::-1]
+	return rcseq
+
+input_seq_iterator = SeqIO.parse(open(options.inputfile), "fastq")
+short_seq_iterator = (record for record in input_seq_iterator \
+                        if upper(str(record.seq)).count(str(forward_seq)) < 2 \
+                        if upper(str(record.seq)).count(str(forward_rc)) < 2 \
+                        if upper(str(record.seq)).count(str(reverse_seq)) < 2 \
+                        if upper(str(record.seq)).count(str(reverse_rc)) < 2)
+                         
+output_handle = open(options.outputfile, "w")
+SeqIO.write(short_seq_iterator, output_handle, "fastq")
+output_handle.close()

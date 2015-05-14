@@ -1,0 +1,19 @@
+
+
+Total number of reads: 2500000
+            
+           Reads without Ns (F/R): 2490488 (99.61952%)
+
+           Reads without Ns, quality cutoff 21 and length cutoff 150: 1712518 (68.50072%)
+
+           This script has generated trimmed files:
+
+           "Filtered_reads_without_Ns_quality_threshold_21_length_threshold_150_R1.fastq"
+           "Filtered_reads_without_Ns_quality_threshold_21_length_threshold_150_R2.fastq"
+         
+           Summary files:            
+
+           "Reads_Average_quality_distribution_table.tab"
+           "Reads_quality_and_reads_having_Ns_summary.txt"
+Your group mbsulli has been charged 00:25:08 for 2 cpus.
+You previously had 208800:45:33.  You now have 208799:55:17 remaining for the queue htc_standard

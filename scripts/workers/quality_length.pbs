@@ -1,0 +1,17 @@
+#PBS -N len_dist
+#PBS -m ea
+#PBS -M kyclark@email.arizona.edu
+#PBS -W group_list=mbsulli
+#PBS -q standard
+#PBS -l select=1:ncpus=2:mem=4Gb
+#PBS -l cput=6:0:0
+#PBS -l walltime=24:00:00
+#PBS -l jobtype=htc_only
+
+module load perl
+
+REV_FILE=$(echo $FILE | sed "s/_for/_rev/")
+
+cd $DATA_DIR 
+
+perl $SCRIPT_DIR/Reads_Quality_Length_distribution.pl -fw $FILE -rw $REV_FILE -sc 33 -q 21 -l 150 -ld N
