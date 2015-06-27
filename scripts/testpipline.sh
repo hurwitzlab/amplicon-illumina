@@ -28,13 +28,4 @@ for FILE in $REV_FILES; do
 done
 
 JOB=$(qsub -j oe -v FOR_FILES_LIST,REV_FILES_LIST,PROJECT_DIR workers/testpipeline_exec.sh)
-i=0
-#for script in ${SCRIPT_DIR}/0*.sh; do
-#   JOB=$(qsub -j oe -v FOR_FILES_LIST,REV_FILES_LIST,PROJECT_DIR $script)
-#   printf "%5d: %s\n" $i $JOB
-#   while [ "$(qstat | grep $JOB)" != "executing qstat_local" ]; do
-#      sleep 5m
-#   done
-#   echo "Finished $(basename $script .sh)"
-#   let i++
-#done
+echo "Job ID: ${JOB}"
