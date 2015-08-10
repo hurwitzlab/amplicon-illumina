@@ -25,7 +25,9 @@ mv ${FOR_NONCHIM%.uchime}_tax_assignments.txt ${FOR_TAXONOMY}
 
 ### Do above steps for the reverse reads
 ### note to self - find a way to do forward and reverse reads in one step
-#cd $REV_OUT
-#mothur "#classify.seqs(fasta=${REV_NONCHIM}, reference=${MOTHUR_REF_DATABASE}, taxonomy=${MOTHUR_TAX_MAP}, cutoff=80, processors=8)" 2> 09_assign_taxonomy.log
-#mv ${REV_NONCHIM%.uchime}.UNITEv6_sh_97.wang.taxonomy ${REV_TAXONOMY}
-#parallel_assign_taxonomy_rdp.py -i ${REV_NONCHIM} -o ${REV_TAXONOMY} -t ${TAX_MAP} -r ${REF_DATABASE} -O 7 --rdp_max_memory 3500
+if [[ $PAIRED_END = "true" ]]; then
+   cd $REV_OUT
+   #mothur "#classify.seqs(fasta=${REV_NONCHIM}, reference=${MOTHUR_REF_DATABASE}, taxonomy=${MOTHUR_TAX_MAP}, cutoff=80, processors=8)" 2> 09_assign_taxonomy.log
+   parallel_assign_taxonomy_rdp.py -i ${REV_NONCHIM} -o . -t ${QIIME_TAX_MAP} -r ${QIIME_REF_DATABASE} -O 4 --rdp_max_memory 3500 2> 09_assign_taxonomy.log
+   #mv ${REV_NONCHIM%.uchime}.UNITEv6_sh_97.wang.taxonomy ${REV_TAXONOMY}
+fi

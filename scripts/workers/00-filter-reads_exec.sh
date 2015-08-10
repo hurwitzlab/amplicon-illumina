@@ -30,21 +30,23 @@ cat $TRUNCFILES > ${FOR_READS}
 # remove filtered split files after concatenating them
 rm *_for_*.fastq.a[a-z]
 
+if [[ $PAIRED_END = "true" ]]; then
 # repeat above steps for reverse files
-cd $REV_OUT
-while read FILE; do
-   echo $FILE
-   FILENAME=$(basename $FILE)
-   BASENAME=${FILENAME%.fastq.a[a-z]}
-   AFFIX=${FILENAME#*.fastq.}
-   echo $BASENAME
-#   $BIN_DIR/usearch -fastq_filter $FILE -fastqout ${BASENAME}_filtered -fastq_truncqual 15 -fastq_maxee $MAXEE --eeout -fastq_maxns 0 -fastq_ascii 33
-   $BIN_DIR/usearch -fastq_filter $FILE -fastqout \
-   00-${BASENAME}_ee${MAXEE}_trunc${TRUNCVAL}_filtered.fastq.$AFFIX \
-   -fastq_trunclen ${TRUNCVAL} -fastq_maxee $MAXEE -threads 1 &> \
-   00-usearch-filter.log
-done < $REV_FILES_LIST
-TRUNCFILES=$(ls *_rev_*.fastq.a[a-z])
-cat $TRUNCFILES > ${REV_READS}
-# remove filtered split files after concatenating them
-rm *_rev_*.fastq.a[a-z]
+   cd $REV_OUT
+   while read FILE; do
+      echo $FILE
+      FILENAME=$(basename $FILE)
+      BASENAME=${FILENAME%.fastq.a[a-z]}
+      AFFIX=${FILENAME#*.fastq.}
+      echo $BASENAME
+   #   $BIN_DIR/usearch -fastq_filter $FILE -fastqout ${BASENAME}_filtered -fastq_truncqual 15 -fastq_maxee $MAXEE --eeout -fastq_maxns 0 -fastq_ascii 33
+      $BIN_DIR/usearch -fastq_filter $FILE -fastqout \
+      00-${BASENAME}_ee${MAXEE}_trunc${TRUNCVAL}_filtered.fastq.$AFFIX \
+      -fastq_trunclen ${TRUNCVAL} -fastq_maxee $MAXEE -threads 1 &> \
+      00-usearch-filter.log
+   done < $REV_FILES_LIST
+   TRUNCFILES=$(ls *_rev_*.fastq.a[a-z])
+   cat $TRUNCFILES > ${REV_READS}
+   # remove filtered split files after concatenating them
+   rm *_rev_*.fastq.a[a-z]
+fi

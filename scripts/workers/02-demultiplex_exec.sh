@@ -16,5 +16,7 @@ split_libraries_fastq.py -o 02-for_demultiplexed_files -i ${FOR_READS} -b ${FOR_
 
 ### Do above steps for the reverse reads
 ### note to self - find a way to do forward and reverse reads in one step
-cd $REV_OUT
-split_libraries_fastq.py -o 02-rev_demultiplexed_files -i ${REV_READS} -b ${REV_BARCODES} -m ${MAPFILE} -q 0 --barcode_type 12 --rev_comp_barcode --phred_offset=33 2> 02-qiime-demult.log
+if [[ $PAIRED_END = "true" ]]; then
+   cd $REV_OUT
+   split_libraries_fastq.py -o 02-rev_demultiplexed_files -i ${REV_READS} -b ${REV_BARCODES} -m ${MAPFILE} -q 0 --barcode_type 12 --rev_comp_barcode --phred_offset=33 2> 02-qiime-demult.log
+fi

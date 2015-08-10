@@ -14,5 +14,7 @@ cd $FOR_OUT
 ${BIN_DIR}/usearch -usearch_global ${FOR_DEMUX} -db ${FOR_NONCHIM} -strand plus -id 0.97 -uc ${FOR_CHIM_MAP} -threads 1 2> 07-map.for_ee${MAXEE}_trunc${TRUNCVAL}_uchime.log
 ### Do above steps for the reverse reads
 ### note to self - find a way to do forward and reverse reads in one step
-cd $REV_OUT
-${BIN_DIR}/usearch -usearch_global ${REV_DEMUX} -db ${REV_NONCHIM} -strand plus -id 0.97 -uc ${REV_CHIM_MAP} -threads 1 2> 07-map.rev_ee${MAXEE}_trunc${TRUNCVAL}_uchime.log
+if [[ $PAIRED_END = "true" ]]; then
+   cd $REV_OUT
+   ${BIN_DIR}/usearch -usearch_global ${REV_DEMUX} -db ${REV_NONCHIM} -strand plus -id 0.97 -uc ${REV_CHIM_MAP} -threads 1 2> 07-map.rev_ee${MAXEE}_trunc${TRUNCVAL}_uchime.log
+fi

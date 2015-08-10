@@ -14,6 +14,8 @@ FOR_OTU_BASE=$(basename ${FOR_OTU#*05-*} .fasta)
 ${BIN_DIR}/usearch -uchime_ref ${FOR_OTU} -db ${ITS_REF_DATABASE} -uchimeout 06-chimeras.uchime -strand plus -nonchimeras ${FOR_NONCHIM} -threads 1 2> 06-chimera-check.log
 ### Do above steps for the reverse reads
 ### note to self - find a way to do forward and reverse reads in one step
-cd $REV_OUT
-REV_OTU_BASE=$(basename ${REV_OTU#*05-*} .fasta)
-${BIN_DIR}/usearch -uchime_ref ${REV_OTU} -db ${ITS_REF_DATABASE} -uchimeout 06-chimeras.uchime -strand plus -nonchimeras ${REV_NONCHIM} -threads 1 2> 06-chimera-check.log
+if [[ $PAIRED_END = "true" ]]; then
+   cd $REV_OUT
+   REV_OTU_BASE=$(basename ${REV_OTU#*05-*} .fasta)
+   ${BIN_DIR}/usearch -uchime_ref ${REV_OTU} -db ${ITS_REF_DATABASE} -uchimeout 06-chimeras.uchime -strand plus -nonchimeras ${REV_NONCHIM} -threads 1 2> 06-chimera-check.log
+fi

@@ -12,7 +12,10 @@ source ${PROJECT_DIR}/config.sh
 cd $FOR_OUT
 #TODO: get output to use file basename
 ${BIN_DIR}/usearch -derep_fulllength ${FOR_DEMUX} -fastaout ${FOR_DEREP} -sizeout -threads 1 &> 03-usearch-derep.log
+
 ### Do above steps for the reverse reads
 ### note to self - find a way to do forward and reverse reads in one step
-cd $REV_OUT
-${BIN_DIR}/usearch -derep_fulllength ${REV_DEMUX} -fastaout ${REV_DEREP} -sizeout -threads 1 &> 03-usearch-derep.log
+if [[ $PAIRED_END = "true" ]]; then
+   cd $REV_OUT
+   ${BIN_DIR}/usearch -derep_fulllength ${REV_DEMUX} -fastaout ${REV_DEREP} -sizeout -threads 1 &> 03-usearch-derep.log
+fi
